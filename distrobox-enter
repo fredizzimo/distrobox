@@ -386,7 +386,8 @@ generate_command() {
 	result_command="${result_command} ${container_name}"
 
 	if [ -n "${container_command}" ]; then
-		result_command="${result_command} ${container_command}"
+                quoted_container_command="\\\"${container_command}\\\""
+		result_command="${result_command} sh -c \"\\\$(getent passwd ${USER} | cut -f 7 -d :) -lc ${quoted_container_command}\""
 	else
 		# if no command was specified, let's execute a command that will find
 		# and run the default shell for the user
